@@ -334,10 +334,18 @@ class MessageParser(ABC):
 # Used in QSO-style modes (FT8, FT4, FST4)
 class QsoMessageParser(MessageParser):
     locator_pattern = re.compile(".*\\s([A-Z0-9/]{2,})(\\sR)?\\s([A-R]{2}[0-9]{2})$")
+    sotamat_pattern = re.compile(".*\\s([A-Z0-9/]{2,}/[A-Z0-9/]{2,4})$")
+
 
     def parse(self, msg):
         m = QsoMessageParser.locator_pattern.match(msg)
         if m is None:
+            #Match SOTAmat SPOT messages
+            m=QsoMessageParser.sotamat_pattern.match(msg)
+            if m is None:
+                return()
+            else:
+                return {"source": {"callsign": m.group(1)}, "locator": ""}
             return {}
         # this is a valid locator in theory, but it's somewhere in the arctic ocean, near the north pole, so it's very
         # likely this just means roger roger goodbye.

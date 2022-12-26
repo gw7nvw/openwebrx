@@ -20,7 +20,7 @@ class PskReporter(Reporter):
 
     It interfaces with pskreporter as documented here: https://pskreporter.info/pskdev.html
     """
-    interval = 300
+    interval = 30
 
     def getSupportedModes(self):
         """
